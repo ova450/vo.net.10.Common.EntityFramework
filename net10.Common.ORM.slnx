@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="CORM.Core/CORM.Core.csproj" />
+  <Project Path="CORM.EntityFrameworkCore/CORM.EntityFrameworkCore.csproj" />
+  <Project Path="CORM.TestConsole/CORM.TestConsole.csproj" Id="e6cf17d0-7687-4ad5-8da2-2fdc5de9eada" />
+</Solution>

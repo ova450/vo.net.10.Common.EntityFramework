@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>CORM.Core</RootNamespace>
+    <AssemblyName>CORM.Core</AssemblyName>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>ovaataaridotru.Common.ORM.Core</PackageId>
+    <Version>10.1.1</Version>
+    <Authors>ovaataaridotru</Authors>
+    <PackageTags>entity; orm; core; interfaces</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+</Project>
