@@ -8,7 +8,7 @@ namespace CORM.Core.Abstraction.Infrastructure
     /// Base entity configuration with automatic primary key setup
     /// </summary>
     public abstract class EntityTypeConfigurationAbstract<TEntity> : IEntityTypeConfiguration<TEntity>
-        where TEntity : class, IEntityBase
+        where TEntity : class, IEntity
     {
         protected virtual string[] PrimaryKeys => ["Id"];
         protected virtual bool UseDefaultPrimaryKeyConfiguration => true;

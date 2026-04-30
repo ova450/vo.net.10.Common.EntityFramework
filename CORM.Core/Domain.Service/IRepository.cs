@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 
 namespace CORM.Core.Domain.Service
 {
-    public interface IRepositoryBase<TEntity, TKey>
+    public interface IRepository<TEntity, TKey>
         where TKey : IEquatable<TKey>
-        where TEntity : class, IEntityBase<TKey>
+        where TEntity : class, IEntity<TKey>
     {
         IQueryable<TEntity> Query();
         IQueryable<TEntity> Query(params Expression<Func<TEntity, object>>[] includes);
@@ -22,8 +22,5 @@ namespace CORM.Core.Domain.Service
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
     }
 
-    public interface IRepositoryBase<TEntity> where TEntity : class, IEntityBase { }
-    public interface IRepository<TEntity, TKey> where TEntity : class, IEntity<TKey> where TKey : IEquatable<TKey> { }
     public interface IRepository<TEntity> where TEntity : class, IEntity { }
-
 }

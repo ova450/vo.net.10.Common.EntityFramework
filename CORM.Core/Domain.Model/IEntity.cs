@@ -1,16 +1,8 @@
 namespace CORM.Core.Domain.Model
 {
-    public interface IEntityBase<TKey> where TKey : IEquatable<TKey>
-    {
-        TKey Id { get; set; }
-    }
-    public interface IEntityBase: IEntityBase<int> { }
-    public interface IEntity<TKey> : IEntityBase<TKey> where TKey : IEquatable<TKey>
-    {
-        string Name { get; set; } 
-    }
-    public interface IEntity: IEntity<int> { }
-
+    public interface IEntity<TKey> where TKey : IEquatable<TKey> { TKey Id { get; set; } }
+    public interface IEntity : IEntity<int>;
+    public interface IEntityNamed : IEntity { string Name { get; set; } }
 
     public interface IEntityCreated
     {

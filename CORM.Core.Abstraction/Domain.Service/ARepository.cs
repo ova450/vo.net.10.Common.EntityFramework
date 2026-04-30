@@ -7,12 +7,12 @@ using System.Linq.Expressions;
 
 namespace CORM.Core.Abstraction.Domain.Service;
 
-public abstract class ARepositoryBase<TEntity, TKey>(IContext context) : IRepositoryBase<TEntity, TKey>
+public abstract class ARepository<TEntity, TKey>(DbContext context) : IRepository<TEntity, TKey>
     where TKey : struct, IEquatable<TKey>
-    where TEntity : class, IEntityBase<TKey>
+    where TEntity : class, IEntity<TKey>
 {
-    protected readonly DbContext db = (context ?? throw new ArgumentNullException(nameof(context))).Context;
-    protected readonly DbSet<TEntity> dbSet = context.Context.Set<TEntity>();
+    protected readonly DbContext db = (context ?? throw new ArgumentNullException(nameof(context)));
+    protected readonly DbSet<TEntity> dbSet = context.Set<TEntity>();
 
     public virtual IQueryable<TEntity> Query() => dbSet.AsNoTracking();
 
@@ -41,12 +41,5 @@ public abstract class ARepositoryBase<TEntity, TKey>(IContext context) : IReposi
     public TEntity Update(TEntity entity) => db.Update(entity).Entity;
 }
 
-public abstract class ARepositoryBase<TEntity>(IContext context) : ARepositoryBase<TEntity, int>(context)
-    where TEntity : class, IEntityBase<int>;
-
-public abstract class ARepository<TEntity, TKey>(IContext context, string name) : ARepositoryBase<TEntity, TKey>(context), IRepository<TEntity, TKey>
-    where TKey : struct, IEquatable<TKey>
-    where TEntity : class, IEntity<TKey>;
-
-public abstract class ARepository<TEntity>(IContext context, string name) : ARepositoryBase<TEntity, int>(context), IRepository<TEntity>
-    where TEntity : class, IEntity;
+public abstract class ARepository<TEntity>(DbContext context) : ARepository<TEntity, int>(context)
+    where TEntity : class, IEntity<int>;

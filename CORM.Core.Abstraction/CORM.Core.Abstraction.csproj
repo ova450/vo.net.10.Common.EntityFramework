@@ -7,8 +7,8 @@
     <AssemblyName>CORM.Core.Abstraction</AssemblyName>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageId>ovaataaridotru.Common.ORM.Domain.Model</PackageId>
-    <Version>10.3.1</Version>
+    <PackageId>ovaataaridotru.Common.ORM.Core.Abstraction</PackageId>
+    <Version>10.4.0</Version>
     <Authors>ovaataaridotru</Authors>
     <PackageTags>entity; orm; entityframework; repository</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

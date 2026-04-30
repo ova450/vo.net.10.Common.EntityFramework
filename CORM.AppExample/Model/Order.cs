@@ -2,7 +2,7 @@ using CORM.Core.Domain.Model;
 
 namespace CORM.AppExample.Model
 {
-    public class Order(int userId, ICollection<(int productId, int quantity)> items) : IEntityBase, IDoneTiming, IEntityDetails, IParent<User>, IChild<OrderItem>
+    public class Order(int userId, ICollection<(int productId, int quantity)> items) : IEntity, IEntityDetails, IParent<User>, IChild<OrderItem>
     {
         public int Id { get; set; }
         public string? Description { get; init; }

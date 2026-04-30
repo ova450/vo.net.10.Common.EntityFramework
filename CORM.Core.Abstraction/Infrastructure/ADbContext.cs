@@ -22,7 +22,7 @@ public abstract class ADbContext(DbContextOptions options, string[]? primaryKeys
             var clr = entityType.ClrType;
 
             if (entityType.FindPrimaryKey() == null &&
-                clr.GetInterface(nameof(IEntityBase)) != null) modelBuilder.Entity(clr).HasKey(_primaryKeys);
+                clr.GetInterface(nameof(IEntity)) != null) modelBuilder.Entity(clr).HasKey(_primaryKeys);
             //typeof(IEntityBase).IsAssignableFrom(clr))
 
             // 3. Concurrency (RowVersion) для IConcurrency
