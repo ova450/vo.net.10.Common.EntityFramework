@@ -8,3 +8,4 @@ public abstract class AEntity<TKey> : IEntity<TKey> where TKey : IEquatable<TKey
 }
 
 public abstract class AEntity : AEntity<int> { }
+
