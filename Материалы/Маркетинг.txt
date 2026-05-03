@@ -1,0 +1,123 @@
+
+1. Позиционирование (самое важное)
+Это не «ещё один ORM», а "Convention-first auto-relations for EF Core via compile-time DSL"
+Или иначе “Опиши связи интерфейсами — получи полноценную EF-модель без бойлерплейта”
+
+2. Новизна
+
+2.1. Сейчас в EF
+- писать FK + navigation руками
+- дублирование
+- Fluent API шум
+
+2.2. Здесь
+class Order : IParent<User>, IParent<Tenant>
+или
+class Order : IParent<User, Tenant>
+или
+class Order : IParent<(User, Guid), Tenant>
+
+3. MVP (без этого не публиковать)
+3.1. Generator (incremental, обязательно)
+Не обычный ISourceGenerator, а IIncrementalGenerator
+иначе:
+- медленный билд
+- минус к adoption
+
+3.2.  Диагностика (killer feature), добавить compile-time ошибки, примеры:
+- CORM001: Duplicate relation 'User' in Order
+- CORM002: Type 'User' must implement IEntity
+- CORM003: Navigation already exists
+
+3.3. Zero-config UX
+dotnet add package CORM.AutoRelations
+без:
+- регистрации сервисов
+- лишних вызовов
+
+3.4. Работает с миграциями EF
+Проверить dotnet ef migrations add Init
+
+4. DX (developer experience)
+4.1. IntelliSense должен видеть свойства:
+order.User // должен быть виден
+
+4.2. Навигация по коду
+Ctrl+Click → переход в .g.cs
+
+4.3. Ноль магии runtime
+Никаких builder.ApplySomethingMagic()
+
+5. Структура репозитория
+CORM.AutoRelations/ ├── src/ │   ├── CORM.AutoRelations/           (DSL) │   ├── CORM.AutoRelations.Generator/ │   ├── CORM.AutoRelations.EF/ │ ├── samples/ │   ├── BasicSample/ │   ├── ComplexRelations/ │ ├── tests/ │   ├── GeneratorTests/ │   ├── IntegrationTests/ │ ├── README.md ├── LICENSE └── docs/
+
+6. README (это 70% успеха)
+6.1. Hook (первые 5 секунд)
+Stop writing EF Core navigation properties manually.
+class Order : IParent<User>, IParent<Tenant>That's it.
+
+6.2. Before / After
+❌ Было:
+public int UserId { get; set; }
+public User User { get; set; }
+✅ Стало:
+class Order : IParent<User>
+
+6.3. How it works (1 абзац)
+- Source Generator
+- EF conventions
+- zero runtime cost
+
+6.4. Demo GIF (обязательно)
+- пишешь интерфейс
+- появляется свойство
+
+7 Контент (ускоритель роста)
+7.1. Reddit, пост: “I got tired of writing EF navigation properties, so I built this”
+r/dotnet
+r/csharp
+7.2. Hacker News
+7.3. Dev.to статья. Заголовок: “Stop writing EF Core navigation properties manually”
+
+8. Что убивает такие проекты
+8.1. Слишком сложная идея. Если нужно объяснять 10 минут — никто не будет использовать.
+8.2. Магия без контроля. Если пользователь не понимает, что происходит — он уйдёт.
+8.3. Баги в edge-case
+- many-to-many
+- composite keys
+- nullable
+
+9. Фичи, которые дадут +50 ⭐
+9.1. Partial opt-out
+[IgnoreAutoRelation]
+9.2. Naming customization
+UserId → UserFk
+9.3. Collection generation
+User.Orders
+(опционально)
+9.4. Analyzer hints
+IDE подсказки:
+“You can replace this with IParent<User>”
+
+10. Реалистичная стратегия роста
+10.1 Неделя 1
+- Generator + базовый DSL
+- README + пример
+
+10.2 Неделя 2
+- диагностика
+- тесты
+
+10.3 Неделя 3
+- публикация NuGet
+- посты
+
+10.4. Неделя 4
+- фиксы + фидбек
+
+11. Итог
+Чтобы получить 100+ ⭐, тебе нужно:
+- решить реальную боль (у тебя есть)
+- сделать DX идеальным
+- показать это за 10 секунд
+- не усложнить

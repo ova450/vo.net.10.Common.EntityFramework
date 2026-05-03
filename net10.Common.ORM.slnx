@@ -1,5 +1,0 @@
-<Solution>
-  <Project Path="CORM.AppExample/CORM.AppExample.csproj" />
-  <Project Path="CORM.Core.Abstraction/CORM.Core.Abstraction.csproj" />
-  <Project Path="CORM.Core/CORM.Core.csproj" />
-</Solution>

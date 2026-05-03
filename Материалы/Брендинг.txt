@@ -1,0 +1,8 @@
+﻿Бренд:					EntityNexus
+Аббревиатура:			ENM
+Полное наименование:	EntityNexus - EF Core relationship mapping. Convention-based. Declarative. Domain-driven
+
+Root 1:				EntityNexus
+PackageId 1:		ova.EntityNexus						
+Root 2:				EntityNexus.Abstractions
+PackageId 2:		ova.EntityNexus.Abstractions...
