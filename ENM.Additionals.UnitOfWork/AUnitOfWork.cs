@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace EntityNexus.Additionals.UnitOfWork;
 
-public abstract class AUnitOfWork<TContext> (TContext context): IUnitOfWork, ITransactionAsync
+public abstract class AUnitOfWork<TContext>(TContext context)
+    : IUnitOfWork, ITransactionAsync
     where TContext : DbContext
 {
     protected readonly TContext db = context ?? throw new ArgumentNullException(nameof(context));
@@ -12,10 +13,6 @@ public abstract class AUnitOfWork<TContext> (TContext context): IUnitOfWork, ITr
     private IDbContextTransaction? _transaction;
     private bool _disposed;
 
-    /// <summary>
-    /// Текущий пользователь для аудита.
-    /// Реализация в инфраструктуре (например, через ICurrentUserService).
-    /// </summary>
     protected abstract int GetCurrentUserId();
 
     #region SaveChanges
@@ -39,25 +36,27 @@ public abstract class AUnitOfWork<TContext> (TContext context): IUnitOfWork, ITr
 
         foreach (var entry in db.ChangeTracker.Entries())
         {
+            // Created
             if (entry.Entity is ICreated created && entry.State == EntityState.Added)
             {
                 created.CreatedAt = now;
                 created.CreatedBy = userId;
             }
 
-            //if (entry.Entity is History.IModified<typeof(entry.Entity)> modified &&
-            //    (entry.State == EntityState.Modified || entry.State == EntityState.Added))
-            //{
-            //    modified.ModifiedAt = now;
-            //    modified.ModifiedBy = userId;
-            //}
-
+            // Deleted (Soft Delete)
             if (entry.Entity is IDeleted deleted && entry.State == EntityState.Deleted)
             {
                 entry.State = EntityState.Modified;
-                deleted.IsDeleted = true;
                 deleted.DeletedAt = now;
                 deleted.DeletedBy = userId;
+            }
+
+            // Modified (для основных сущностей)
+            if (entry.Entity is IModified modified &&
+                (entry.State == EntityState.Modified || entry.State == EntityState.Added))
+            {
+                modified.ModifiedAt = now;
+                modified.ModifiedBy = userId;
             }
         }
     }
@@ -76,8 +75,7 @@ public abstract class AUnitOfWork<TContext> (TContext context): IUnitOfWork, ITr
 
     public async Task CommitTransactionAsync(CancellationToken cancellationToken = default)
     {
-        if (_transaction == null)
-            throw new InvalidOperationException("No transaction to commit");
+        if (_transaction == null) throw new InvalidOperationException("No transaction to commit");
 
         await _transaction.CommitAsync(cancellationToken);
         await _transaction.DisposeAsync();
@@ -86,8 +84,7 @@ public abstract class AUnitOfWork<TContext> (TContext context): IUnitOfWork, ITr
 
     public async Task RollbackTransactionAsync(CancellationToken cancellationToken = default)
     {
-        if (_transaction == null)
-            throw new InvalidOperationException("No transaction to rollback");
+        if (_transaction == null) throw new InvalidOperationException("No transaction to rollback");
 
         await _transaction.RollbackAsync(cancellationToken);
         await _transaction.DisposeAsync();
@@ -95,8 +92,6 @@ public abstract class AUnitOfWork<TContext> (TContext context): IUnitOfWork, ITr
     }
 
     #endregion
-
-    #region Dispose
 
     public void Dispose()
     {
@@ -113,6 +108,4 @@ public abstract class AUnitOfWork<TContext> (TContext context): IUnitOfWork, ITr
         }
         _disposed = true;
     }
-
-    #endregion
 }

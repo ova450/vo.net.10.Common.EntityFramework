@@ -1,6 +1,6 @@
+using EntityNexus.DomainModel;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using IEntity = EntityNexus.DomainModel.IEntity;
 
 namespace EntityNexus.Abstractions.Infrastructure;
 
@@ -12,37 +12,48 @@ public abstract class ADbContext(DbContextOptions options, string[]? primaryKeys
     {
         base.OnModelCreating(modelBuilder);
 
-        // Apply all configurations from the assembly
+        // Применяем все конфигурации из сборки
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        // Auto-configure primary keys for entities that don't have configuration
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
-            var clr = entityType.ClrType;
+            var clrType = entityType.ClrType;
 
-            if (entityType.FindPrimaryKey() == null && clr.GetInterface(nameof(IEntity)) != null) 
-                modelBuilder.Entity(clr).HasKey(_primaryKeys);
-            //typeof(IEntityBase).IsAssignableFrom(clr))
+            // 1. Primary Key
+            if (entityType.FindPrimaryKey() == null &&
+                clrType.GetInterface(nameof(IEntity)) != null)
+            {
+                modelBuilder.Entity(clrType).HasKey(_primaryKeys);
+            }
 
-            //// 3. Concurrency (RowVersion) для IConcurrency
-            //if (typeof(IConcurrency).IsAssignableFrom(clr)) modelBuilder.Entity(clr).Property<byte[]>("RowVersion").IsRowVersion();
+            // 2. Concurrency
+            if (typeof(IConcurrency).IsAssignableFrom(clrType))
+            {
+                modelBuilder.Entity(clrType)
+                    .Property<byte[]>("RowVersion")
+                    .IsRowVersion();
+            }
 
-            //// 4. Soft delete: глобальный фильтр для IEntityDeleted
-            //if (typeof(IEntityDeleted).IsAssignableFrom(clr))
-            //{
-            //    var parameter = Expression.Parameter(clr, "e");
-            //    var prop = Expression.Call(
-            //        typeof(EF),
-            //        nameof(EF.Property),
-            //        [typeof(bool)],
-            //        parameter,
-            //        Expression.Constant("IsDeleted"));
+            // 3. Soft Delete
+            if (typeof(ISoftDeletable).IsAssignableFrom(clrType) ||
+                clrType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ISoftDeletable<,>)))
+            {
+                modelBuilder.Entity(clrType).HasQueryFilter(e =>
+                    EF.Property<bool>(e, nameof(ISoftDeletable.IsDeleted)) == false);
+            }
 
-            //    var compare = Expression.Equal(prop, Expression.Constant(false));
-            //    var lambda = Expression.Lambda(compare, parameter);
+            // 4. Атрибуты
+            var auditableAttr = clrType.GetCustomAttribute<AuditableAttribute>();
+            if (auditableAttr != null)
+            {
+                // Можно добавить дополнительные конвенции для Auditable
+            }
 
-            //    modelBuilder.Entity(clr).HasQueryFilter(lambda);
-            //}
+            var trackHistoryAttr = clrType.GetCustomAttribute<TrackHistoryAttribute>();
+            if (trackHistoryAttr != null)
+            {
+                // Настройка истории изменений
+            }
         }
     }
 }
