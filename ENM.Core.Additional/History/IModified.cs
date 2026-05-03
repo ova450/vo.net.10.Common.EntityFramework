@@ -2,17 +2,35 @@ using EntityNexus.DomainModel;
 
 namespace EntityNexus.Additionals.History;
 
-public interface IModifiedAuditable<TKey, TParent, TParentKey>
-    : IEntity<TKey>, IHasParent<TParent, TParentKey>
-    where TKey : IEquatable<TKey>
-    where TParentKey : IEquatable<TParentKey>
-    where TParent : IEntity<TParentKey>;
+/// <summary>
+/// Сущность истории изменений (отдельная таблица).
+/// Используется для хранения истории модификаций основной сущности.
+/// </summary>
+public interface IModified<TId, TParent, TParentId, TUser, TUserId>
+    : IEntity<TId>, IHasParent<TParent, TParentId>
+    where TId : IEquatable<TId>
+    where TParent : IEntity<TParentId>
+    where TParentId : IEquatable<TParentId>
+    where TUser : IEntity<TUserId>
+    where TUserId : IEquatable<TUserId>
+{
+    DateTimeOffset ModifiedAt { get; set; }
 
-public interface IModifiedAuditable<TKey, TParent>
-    :IModifiedAuditable<TKey, TParent, TKey>
-    where TKey : IEquatable<TKey>
-    where TParent : IEntity<TKey>;
+    TUserId ModifiedBy { get; set; }
+    TUser? ModifiedByUser { get; set; }     // явное навигационное свойство
+}
 
-public interface IModifiedAuditable<TParent>
-    : IModifiedAuditable<int, TParent, int>
-    where TParent : IEntity;
+/// <summary>
+/// Упрощённая версия для наиболее частого случая (int ключи).
+/// </summary>
+public interface IModified<TParent, TUser>
+    : IModified<int, TParent, int, TUser, int>
+    where TParent : IEntity<int>
+    where TUser : IEntity<int>;
+
+/// <summary>
+/// Самая простая версия (когда пользователь тоже int).
+/// </summary>
+public interface IModified<TParent>
+    : IModified<int, TParent, int, IEntity<int>, int>
+    where TParent : IEntity<int>;
