@@ -1,4 +1,3 @@
-using EntityNexus.Additionals.History;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -104,7 +103,7 @@ public abstract class AUnitOfWork<TContext>(TContext context)
         if (!_disposed && disposing)
         {
             _transaction?.Dispose();
-            db.Dispose();
+            //db.Dispose();
         }
         _disposed = true;
     }

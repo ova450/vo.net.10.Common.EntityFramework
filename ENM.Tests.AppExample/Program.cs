@@ -1,7 +1,7 @@
-using EN.ConventMapDSL.AppExample.Services;
-using ENM.Tests.AppExample.Data;
-using ENM.Tests.AppExample.Model;
-using ENM.Tests.AppExample.Services;
+using EntityNexus.Tests.AppExample.Data;
+using EntityNexus.Tests.AppExample.Model;
+using EntityNexus.Tests.AppExample.Services;
+using EntityNexus.Tests.AppExample.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +10,7 @@ ConsoleTee.StartLogging();  // Строка для включения логир
 
 try
 {
-    Console.WriteLine("=== CORM Framework App Example ===\n");
+    Console.WriteLine("=== EntityNexus App Example ===\n");
 
     // Setup dependency injection
     var services = new ServiceCollection();
@@ -29,7 +29,6 @@ try
     services.AddScoped<IUnitOfWork, UnitOfWork<AppDbContext>>();
 
     // Register repositories if needed (optional, as they're created by UnitOfWork)
-    services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
     services.AddScoped(typeof(IRepositoryAsync<>), typeof(RepositoryAsync<>));
 
     // Add services

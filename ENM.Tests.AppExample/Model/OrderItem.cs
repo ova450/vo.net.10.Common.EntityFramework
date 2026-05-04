@@ -1,7 +1,7 @@
 using EntityNexus.Abstractions.Domain.Model;
 using EntityNexus.DomainModel;
 
-namespace ENM.Tests.AppExample.Model
+namespace EntityNexus.Tests.AppExample.Model
 {
     public class OrderItem(string name) : AEntityNamed(name), IHasParent<Order>
         {

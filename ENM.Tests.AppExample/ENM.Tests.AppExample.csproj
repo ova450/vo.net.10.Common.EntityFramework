@@ -6,8 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <RootNamespace>EntityNexus.Tests.AppExample</RootNamespace>
     <PackageId>ova.EntityNexus.Tests.AppExample</PackageId>
     <Title>EntityNexus.Tests.AppExample</Title>
+    
     <Authors>ovaaataaridotru</Authors>
     <Company>ovaaataaridotru</Company>
   </PropertyGroup>

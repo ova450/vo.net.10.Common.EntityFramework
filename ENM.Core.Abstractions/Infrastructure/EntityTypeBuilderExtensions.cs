@@ -1,4 +1,5 @@
-﻿using EntityNexus.DomainModel;
+﻿using EntityNexus.Additionals.History;
+using EntityNexus.DomainModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,13 +18,6 @@ public static class EntityTypeBuilderExtensions
 
         builder.Property(e => e.CreatedBy)
                .IsRequired();
-
-        if (typeof(ICreated<,>).IsAssignableFrom(typeof(TEntity).GetInterfaces().FirstOrDefault()))
-        {
-            // Настройка навигационного свойства CreatedByUser
-            builder.Navigation("CreatedByUser")
-                   .IsRequired(false);
-        }
 
         return builder;
     }
@@ -55,20 +49,20 @@ public static class EntityTypeBuilderExtensions
         return builder;
     }
 
-    /// <summary>
-    /// Настраивает историю изменений (отдельная таблица)
-    /// </summary>
-    public static EntityTypeBuilder<TEntity> HasHistory<TEntity, THistory>(this EntityTypeBuilder<TEntity> builder)
-        where TEntity : class
-        where THistory : class, IModified<TEntity, /*TUser*/>
-    {
-        builder.HasMany<THistory>()
-               .WithOne()
-               .HasForeignKey("ParentId")   // или явно указать
-               .OnDelete(DeleteBehavior.Cascade);
+    ///// <summary>
+    ///// Настраивает историю изменений (отдельная таблица)
+    ///// </summary>
+    //public static EntityTypeBuilder<TEntity> HasHistory<TEntity, THistory>(this EntityTypeBuilder<TEntity> builder)
+    //    where TEntity : class
+    //    where THistory : class, IModified<TEntity, /*TUser*/>
+    //{
+    //    builder.HasMany<THistory>()
+    //           .WithOne()
+    //           .HasForeignKey("ParentId")   // или явно указать
+    //           .OnDelete(DeleteBehavior.Cascade);
 
-        return builder;
-    }
+    //    return builder;
+    //}
 
     /// <summary>
     /// Универсальный метод для применения всех конвенций

@@ -12,8 +12,10 @@ namespace EntityNexus.DomainService
         ValueTask<TEntity?> GetByIdAsync(TKey id, CancellationToken cancellationToken = default);
         ValueTask<TEntity?> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
         //Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
-        Task<EntityEntry> RemoveAsync(TEntity entity, CancellationToken cancellationToken = default);
-        Task<EntityEntry> RemoveAsync(TKey id, CancellationToken cancellationToken = default);
+
+        EntityEntry Remove(TEntity entity);
+        EntityEntry Remove(TKey id);
+
         Task<int> CountAsync(CancellationToken cancellationToken = default);
         Task<long> CountAsyncLong(CancellationToken cancellationToken = default);
         Task<bool> ExistsAsync(TKey id, CancellationToken cancellationToken = default);

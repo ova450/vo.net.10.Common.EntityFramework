@@ -1,6 +1,6 @@
 using EntityNexus.Abstractions.Domain.Model;
 
-namespace ENM.Tests.AppExample.Model;
+namespace EntityNexus.Tests.AppExample.Model;
 
 public class Product(string name) : AEntityNamed(name)
 {

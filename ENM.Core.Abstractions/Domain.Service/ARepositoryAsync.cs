@@ -8,7 +8,7 @@ namespace EntityNexus.Abstractions.Domain.Service;
 
 public abstract class ARepositoryAsync<TEntity, TKey>(DbContext context)
     : IRepositoryAsync<TEntity, TKey>
-    where TKey : struct, IEquatable<TKey>
+    where TKey : IEquatable<TKey>
     where TEntity : class, IEntity<TKey>
 {
     protected readonly DbContext db = context;
@@ -27,19 +27,6 @@ public abstract class ARepositoryAsync<TEntity, TKey>(DbContext context)
     //    return Task.FromResult(entry.Entity);
     //}
 
-    public virtual async Task<EntityEntry> RemoveAsync(TEntity entity, CancellationToken cancellationToken = default)
-    {
-        var entry = dbSet.Remove(entity);
-        return await Task.FromResult(entry);
-    }
-    public virtual async Task<EntityEntry> RemoveAsync(TKey id, CancellationToken cancellationToken = default)
-    {
-        var entity = await GetByIdAsync(id, cancellationToken);
-        return entity == null
-            ? throw new InvalidOperationException($"Entity of type {typeof(TEntity).Name} with id {id} not found")
-            : dbSet.Remove(entity);
-    }
-
     public virtual async Task<int> CountAsync(CancellationToken cancellationToken = default)
         => await dbSet.CountAsync(cancellationToken);
     public virtual async Task<long> CountAsyncLong(CancellationToken cancellationToken = default)
@@ -57,8 +44,12 @@ public abstract class ARepositoryAsync<TEntity, TKey>(DbContext context)
         Expression<Func<TEntity, bool>> predicate,
         CancellationToken cancellationToken = default)
         => await dbSet.FirstOrDefaultAsync(predicate, cancellationToken);
+
+    public EntityEntry Remove(TEntity entity) => dbSet.Remove(entity);
+
+    public EntityEntry Remove(TKey id) => dbSet.Remove(dbSet.Find([id]));
 }
 
-public abstract class ARepositoryAsync<TEntity>(DbContext context)    : ARepositoryAsync<TEntity, int>(context)
+public abstract class ARepositoryAsync<TEntity>(DbContext context) : ARepositoryAsync<TEntity, int>(context)
     where TEntity : class, IEntity<int>;
 

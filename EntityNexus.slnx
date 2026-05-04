@@ -1,6 +1,5 @@
 <Solution>
   <Folder Name="/Additionals/">
-    <Project Path="ENM.Additionals.UnitOfWork/ENM.Additionals.UnitOfWork.csproj" />
     <Project Path="ENM.Core.Additional/ENM.Additionals.csproj" Id="ac202e7d-6a78-44ac-afef-eb19071de0b2" />
     <Project Path="ENM.Core.Additionals.Abstractions/ENM.Additionals.Abstractions.csproj" Id="595ad912-72ae-4356-acb5-05db470e3589" />
   </Folder>

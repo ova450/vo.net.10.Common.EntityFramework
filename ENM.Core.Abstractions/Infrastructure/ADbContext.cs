@@ -1,5 +1,7 @@
+using EntityNexus.Abstractions.Domain.Model;
 using EntityNexus.DomainModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Reflection;
 
 namespace EntityNexus.Abstractions.Infrastructure;
@@ -20,11 +22,11 @@ public abstract class ADbContext(DbContextOptions options, string[]? primaryKeys
             var clrType = entityType.ClrType;
 
             // 1. Primary Key
-            if (entityType.FindPrimaryKey() == null &&
-                clrType.GetInterface(nameof(IEntity)) != null)
+            if (entityType.FindPrimaryKey() == null && clrType.GetInterface(nameof(IEntity<>))?.IsAssignableFrom(clrType) == true)
             {
                 modelBuilder.Entity(clrType).HasKey(_primaryKeys);
             }
+
 
             // 2. Concurrency
             if (typeof(IConcurrency).IsAssignableFrom(clrType))

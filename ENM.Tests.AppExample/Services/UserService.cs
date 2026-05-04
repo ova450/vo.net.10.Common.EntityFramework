@@ -1,8 +1,7 @@
-using CORM.Core.Abstraction.Domain.Service;
-using ENM.Tests.AppExample.Data;
-using ENM.Tests.AppExample.Model;
+using EntityNexus.Abstractions.Domain.Service;
+using EntityNexus.Tests.AppExample.Data;
+using EntityNexus.Tests.AppExample.Model;
 
-namespace EN.ConventMapDSL.AppExample.Services
-{
-    public class UserService(AppDbContext db) : Repository<User>(db) { }
-}
+namespace EntityNexus.Tests.AppExample.Services;
+
+public class UserService(AppDbContext db) : ARepositoryAsync<User>(db);

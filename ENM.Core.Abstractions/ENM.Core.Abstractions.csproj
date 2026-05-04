@@ -37,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ENM.Core.Additional\ENM.Additionals.csproj" />
     <ProjectReference Include="..\ENM.Core\ENM.Core.csproj" />
   </ItemGroup>
 

@@ -1,9 +1,8 @@
-
 using EntityNexus.Abstractions.Domain.Model;
 
-namespace ENM.Tests.AppExample.Model
+namespace EntityNexus.Tests.AppExample.Model
 {
-    public class User : AEntity
+    public class User : AEntityNamed<User>
     {
         //public int Id { get; set; }
         //public string Name { get; set; }

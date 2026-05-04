@@ -7,10 +7,13 @@ namespace EntityNexus.DomainModel;
 /// </summary>
 public interface IHasParent<TParent, TKey>
     where TParent : IEntity<TKey>
-    where TKey : IEquatable<TKey>;
+    where TKey : IEquatable<TKey>
+{
+    TKey ParentId { get; set; }
+    TParent? Parent { get; set; }
+}
 
 /// <summary>
 /// Упрощённая версия для int-ключа.
 /// </summary>
-public interface IHasParent<TParent> : IHasParent<TParent, int>
-    where TParent : IEntity;
+public interface IHasParent<TParent> : IHasParent<TParent, int> where TParent : IEntity;

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace EN.ConventMapDSL.AppExample.Utils
+namespace EntityNexus.Tests.AppExample.Utils
 {
     public static class ConsoleTee
     {

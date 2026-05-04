@@ -1,76 +1,28 @@
+using EntityNexus.Additionals.UnitOfWork;
 using EntityNexus.DomainService;
-using EntityNexus.Infrastructure;
+using EntityNexus.Tests.AppExample.Model;
+using Microsoft.EntityFrameworkCore;
 
-namespace ENM.Tests.AppExample.Services
+namespace EntityNexus.Tests.AppExample.Services;
+
+//public class OrderService(DbContext context) : AUnitOfWork<DbContext>(context)
+//{
+//    protected override int GetCurrentUserId()
+//    {
+//        throw new NotImplementedException();
+//    }
+//}
+
+public class OrderService
 {
-    public class OrderService(IContext context) : AUnitOfWork<IContext>(context)
+    private readonly IUnitOfWork _uow;
+    private readonly IRepositoryAsync<Order> _orders;
+    private readonly IRepositoryAsync<Product> _products;
+
+    public OrderService(IUnitOfWork uow)
     {
-        IRepositoryAsync<TEntity> IUnitOfWork.RepositoryAsync<TEntity>()
-        {
-            throw new NotImplementedException();
-        }
+        _uow = uow;
+        _orders = uow.RepositoryAsync<Order>();
+        _products = uow.RepositoryAsync<Product>();
     }
-    //    public class OrderService(IUnitOfWork unitOfWork)
-    //    {
-    //        private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    //        private readonly IRepositoryAsync<Order> _orderRepository = unitOfWork.RepositoryAsync<Order>();
-    //        private readonly IRepositoryAsync<Product> _productRepository = unitOfWork.RepositoryAsync<Product>();
-
-    //        public async Task<Order> CreateOrderAsync(int userId, List<(int productId, int quantity)> items)
-    //        {
-    //            await _unitOfWork.BeginTransactionAsync();
-
-    //            try
-    //            {
-    //                var order = new Order(userId, items)
-    //                {
-    //                    UserId = userId,
-    //                    OrderDate = DateTime.UtcNow,
-    //                    TotalAmount = 0
-    //                };
-
-    //                await _orderRepository.AddAsync(order);
-    //                await _unitOfWork.SaveChangesAsync();
-
-    //                decimal totalAmount = 0;
-
-    //                foreach (var (productId, quantity) in items)
-    //                {
-    //                    var product = await _productRepository.GetByIdAsync(productId);
-    //                    if (product == null)
-    //                        throw new Exception($"Product {productId} not found");
-
-    //                    if (product.Stock < quantity)
-    //                        throw new Exception($"Insufficient stock for product {product.Name}");
-
-    //                    var orderItem = new OrderItem
-    //                    {
-    //                        OrderId = order.Id,
-    //                        ProductId = productId,
-    //                        Quantity = quantity,
-    //                        UnitPrice = product.Price
-    //                    };
-
-    //                    // This would be added through a repository for OrderItem
-    //                    product.Stock -= quantity;
-    //                    await _productRepository.UpdateAsync(product);
-
-    //                    totalAmount += product.Price * quantity;
-    //                }
-
-    //                order.TotalAmount = totalAmount;
-    //                await _orderRepository.UpdateAsync(order);
-    //                await _unitOfWork.SaveChangesAsync();
-    //                await _unitOfWork.CommitTransactionAsync();
-
-    //                return order;
-    //            }
-    //            catch
-    //            {
-    //                await _unitOfWork.RollbackTransactionAsync();
-    //                throw;
-    //            }
-    //        }
-    //    }
-    //}
 }
