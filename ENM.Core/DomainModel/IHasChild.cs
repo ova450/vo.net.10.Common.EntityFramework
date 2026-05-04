@@ -6,7 +6,7 @@ namespace EntityNexus.DomainModel;
 /// Коллекция Children настраивается в EntityTypeConfiguration.
 /// </summary>
 public interface IHasChild<TChild, TKey>
-    where TKey : struct, IEquatable<TKey>
+    where TKey : IEquatable<TKey>
     where TChild : IEntity<TKey>
 { 
     ICollection<TChild> Children { get; set; }
@@ -15,4 +15,7 @@ public interface IHasChild<TChild, TKey>
 /// <summary>
 /// Упрощённая версия для int-ключа.
 /// </summary>
-public interface IHasChild<TChild> : IHasChild<TChild, int> where TChild : IEntity;
+public interface IHasChild<TChild> where TChild : IEntity
+{
+    ICollection<TChild> Children { get; set; }
+}

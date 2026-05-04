@@ -8,6 +8,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <RootNamespace>EntityNexus.Tests.AppExample</RootNamespace>
     <PackageId>ova.EntityNexus.Tests.AppExample</PackageId>
+    <PackageOutputPath>..\ENM.Packages\</PackageOutputPath>
     <Title>EntityNexus.Tests.AppExample</Title>
     
     <Authors>ovaaataaridotru</Authors>
@@ -32,11 +33,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.7" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.7 " />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ENM.Core.Abstractions\ENM.Core.Abstractions.csproj" />
-    <ProjectReference Include="..\ENM.Core.Additional\ENM.Additionals.csproj" />
+    <PackageReference Include="ova.EntityNexus.Abstractions" Version="10.6.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,13 +1,7 @@
 <Solution>
-  <Folder Name="/Additionals/">
-    <Project Path="ENM.Core.Additional/ENM.Additionals.csproj" Id="ac202e7d-6a78-44ac-afef-eb19071de0b2" />
-    <Project Path="ENM.Core.Additionals.Abstractions/ENM.Additionals.Abstractions.csproj" Id="595ad912-72ae-4356-acb5-05db470e3589" />
-  </Folder>
-  <Folder Name="/Core/">
-    <Project Path="ENM.Core.Abstractions/ENM.Core.Abstractions.csproj" />
-    <Project Path="ENM.Core/ENM.Core.csproj" />
-  </Folder>
-  <Folder Name="/Tests/">
-    <Project Path="ENM.Tests.AppExample/ENM.Tests.AppExample.csproj" />
-  </Folder>
+  <Project Path="ENM.Additionals/ENM.Additionals.csproj" />
+  <Project Path="ENM.Core.Abstractions/ENM.Core.Abstractions.csproj" />
+  <Project Path="ENM.Core/ENM.Core.csproj" />
+  <Project Path="ENM.Sample.Shop/ENM.Sample.Shop.csproj" Id="7d25d754-e0fc-4f65-ac3b-591d6da695b6" />
+  <Project Path="ENM.Tests.AppExample/ENM.Tests.AppExample.csproj" />
 </Solution>

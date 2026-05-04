@@ -3,8 +3,7 @@ namespace EntityNexus.DomainModel;
 /// <summary>
 /// Интерфейс для сущностей, имеющих обязательное имя.
 /// </summary>
-public interface IEntityNamed<TKey> : IEntity<TKey>
-    where TKey : IEquatable<TKey>
+public interface IEntityNamed<TKey> : IEntity<TKey>    where TKey : IEquatable<TKey>
 {
     string Name { get; set; }
 }
@@ -12,4 +11,4 @@ public interface IEntityNamed<TKey> : IEntity<TKey>
 /// <summary>
 /// Упрощённая версия для int-ключа.
 /// </summary>
-public interface IEntityNamed : IEntityNamed<int>;
+public interface IEntityNamed : IEntity;

@@ -16,4 +16,8 @@ public interface IHasParent<TParent, TKey>
 /// <summary>
 /// Упрощённая версия для int-ключа.
 /// </summary>
-public interface IHasParent<TParent> : IHasParent<TParent, int> where TParent : IEntity;
+public interface IHasParent<TParent> where TParent : IEntity
+{
+    int ParentId { get; set; }
+    TParent? Parent { get; set; }
+}

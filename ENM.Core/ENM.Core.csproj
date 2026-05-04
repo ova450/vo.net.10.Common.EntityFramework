@@ -7,12 +7,14 @@
     <AssemblyName>ova.EntityNexus</AssemblyName>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageId>ova.EntityNexus</PackageId>
-    <Version>10.6.0</Version>
+    <PackageId>ova.EntityNexus.Core</PackageId>
+    <Version>10.6.2</Version>
     <Authors>ovaataaridotru</Authors>
     <PackageTags>entity; orm; core; interfaces</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Nullable>enable</Nullable>
+    <Title>ova.EntityNexus.Core</Title>
+    <PackageOutputPath>..\ENM.Packages\</PackageOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;1591</NoWarn>
@@ -24,6 +26,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.7" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="DomainService\" />
     <Folder Include="Infrastructure\" />
   </ItemGroup>
 </Project>

@@ -1,28 +1,36 @@
-using EntityNexus.Additionals.UnitOfWork;
-using EntityNexus.DomainService;
+using EntityNexus.Tests.AppExample.Data;
 using EntityNexus.Tests.AppExample.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace EntityNexus.Tests.AppExample.Services;
 
-//public class OrderService(DbContext context) : AUnitOfWork<DbContext>(context)
-//{
-//    protected override int GetCurrentUserId()
-//    {
-//        throw new NotImplementedException();
-//    }
-//}
-
-public class OrderService
+public class OrderService(AppDbContext db)
 {
-    private readonly IUnitOfWork _uow;
-    private readonly IRepositoryAsync<Order> _orders;
-    private readonly IRepositoryAsync<Product> _products;
-
-    public OrderService(IUnitOfWork uow)
+    public async Task<Order> CreateOrderAsync(int userId, List<(int productId, int qty)> items)
     {
-        _uow = uow;
-        _orders = uow.RepositoryAsync<Order>();
-        _products = uow.RepositoryAsync<Product>();
+        var products = await db.Products
+            .Where(p => items.Select(i => i.productId).Contains(p.Id))
+            .ToListAsync<Product>();
+
+        foreach (var (productId, qty) in items)
+        {
+            var product = products.First(p => p.Id == productId);
+
+            if (product.Stock < qty) throw new InvalidOperationException("Not enough stock");
+
+            product.Stock -= qty;
+        }
+
+        var order = new Order
+        {
+            ParentId = userId,
+            TotalAmount = 0 // упростим пока
+        };
+
+        db.Orders.Add(order);
+
+        await db.SaveChangesAsync();
+
+        return order;
     }
 }

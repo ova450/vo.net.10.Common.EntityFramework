@@ -6,4 +6,7 @@ public abstract class AEntityNamed<TKey> : AEntity<TKey> where TKey : IEquatable
     public required string Name { get; set; }
 }
 
-public abstract class AEntityNamed : AEntityNamed<int>;
+public abstract class AEntityNamed : AEntity
+{
+    public required string Name { get; set; }
+}
